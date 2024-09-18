@@ -1,0 +1,6 @@
+/pkg
+/dist
+/target
+.DS_Store
+*.log
+
