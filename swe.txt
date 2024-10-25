@@ -1,0 +1,35 @@
+**Select a team name.**
+Siege
+
+**Assign team roles.**
+frontend: andy, alex
+Principal Lying Architect: Andy Tran
+backend: vincent, anthony
+
+**Determine programming languages, frameworks, technologies.**
+Language: Rust
+Frameworks: Leptos (frontend), Axum (backend), AWS (EKS), AWS DynamoDB, Docker, Kubernetes, TailwindCSS (maybe)
+
+**Describe your solution to the challenge statement.**
+Institutions that lack resources and representation might not have the means to access elite sports coaching. Our team holds the view that important knowledge about sports techniques can be curated and presented as a reference for those who cannot afford coaching for their teams. Our aim is to organize information about correct techniques and make it universally available.
+
+**Develop a project vision using the Geoffry Moore Template in Chapter 1 of the textbook. **
+For -> athletes and coaches
+Who -> underrepresented communities
+Our -> FitnessAI
+Is a -> Fitness
+That -> insights and statistics
+Unlike -> expensive coaching
+Our product -> price and convenience 
+
+**Develop a risk management plan using the risk management process.**
+Risks Identification. -> accuracy, data privacy, compute/scalability
+Risk Assessment:
+Accuracy - Probability: 7, Impact: 9, Risk Score: 63
+Data Privacy - Probability: 6, Impact: 8, Risk Score: 48
+Scalability - Probability: 5, Impact: 7, Risk Score: 35
+Risks Planning:
+accuracy -> testing and refining algorithm
+data privacy -> end to end encryption, clear data retention policy
+compute/scalability -> properly designed scalable architecture -> load balancing 
+Risk Monitoring -> checking our model's accuracy and using user feedback
