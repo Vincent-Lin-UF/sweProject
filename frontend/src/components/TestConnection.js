@@ -5,7 +5,7 @@ function TestConenction() {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        axios.get('process.env.API_URL/api/test')
+        axios.get(`${process.env.API_URL}/api/test`)
             .then((response) => {
                 setMessage(response.data.message);
             })
