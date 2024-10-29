@@ -13,10 +13,10 @@ const dbConfig = {
 
 const appConfig = {
   jwtResetSecret: process.env.JWT_RESET_SECRET, // required
-  emailFromUser: 'myemail@example.com', // required
-  emailFromPass: 'myemailpassword', // required
-  emailHost: 'stmp.myemailserver.com', // required
-  emailPort: 465, // required
+  emailFromUser: 'teamsiege21@gmail.com', // required
+  emailFromPass: 'sMk2YO3S9Ov^s$Wc#K8y', // required
+  emailHost: 'stmp.gmail.com', // required
+  emailPort: 587, // required
   emailSecure: true, // required
   jwtResetExpiration: 1000, // default: 900
   basePath: '/auth' // default: '/api'
@@ -32,8 +32,8 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-    origin: allowedOrigins
-  }));
+  origin: allowedOrigins
+}));
 
 app.use(express.json());
 const apiRoutes = require('./routes');
