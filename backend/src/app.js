@@ -1,28 +1,25 @@
 const express = require('express');
 const cors = require('cors');
-const loginJS = require('login-express');
+var passport = require('passport');
+var LocalStrategy = require('passport-local');
+var crypto = require('crypto');
+
+passport.use(new LocalStrategy(function verify(username, password, cb) {
+  db.get('SELECT * FROM users WHERE username = ?', [ username ], function(err, user) {
+    if (err) { return cb(err); }
+    if (!user) { return cb(null, false, { message: 'Incorrect username or password.' }); }
+
+    crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
+      if (err) { return cb(err); }
+      if (!crypto.timingSafeEqual(user.hashed_password, hashedPassword)) {
+        return cb(null, false, { message: 'Incorrect username or password.' });
+      }
+      return cb(null, user);
+    });
+  });
+}));
 
 const app = express();
-
-const dbConfig = {
-  mongodbURI: process.env.MONGO_URI, // required
-  jwtSecret: process.env.JWT_SECRET, // required
-  passwordLength: 10, // default: dev8
-  jwtSessionExpiration: 3600 // default: 7200
-};
-
-const appConfig = {
-  jwtResetSecret: process.env.JWT_RESET_SECRET, // required
-  emailFromUser: 'teamsiege21@gmail.com', // required
-  emailFromPass: 'sMk2YO3S9Ov^s$Wc#K8y', // required
-  emailHost: 'stmp.gmail.com', // required
-  emailPort: 587, // required
-  emailSecure: true, // required
-  jwtResetExpiration: 1000, // default: 900
-  basePath: '/auth' // default: '/api'
-};
-
-loginJS(dbConfig, appConfig, app, express);
 
 const allowedOrigins = [
   'https://siege-swe.vercel.app',  
@@ -32,8 +29,16 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: allowedOrigins
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
 }));
+
 
 app.use(express.json());
 const apiRoutes = require('./routes');

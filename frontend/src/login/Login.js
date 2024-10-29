@@ -27,15 +27,27 @@ function Copyright() {
 }
 
 function Login() {
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log('Name:', name);
         console.log('Email:', email);
         console.log('Password:', password);
 
-
+        axios.post(process.env.REACT_APP_API_URL + '/api/register', {
+            'name': name,
+            'email': email,
+            'password': password
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     };
 
     return (
@@ -53,6 +65,18 @@ function Login() {
                     Sign in
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="name"
+                        label="Name"
+                        name="name"
+                        autoComplete="name"
+                        autoFocus
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
                     <TextField
                         margin="normal"
                         required
