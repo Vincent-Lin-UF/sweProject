@@ -1,0 +1,158 @@
+.hero-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
+    height:80vh;
+    width: 100%;
+}
+
+.hero-left{
+    background-color: transparent;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    height:100%;
+    padding-left: 75px;
+    padding-right: 75px;
+    
+
+}
+
+.hero-left h1{
+    word-spacing: -5px;
+    font-size:65px;
+    justify-content: center;
+}
+
+.slogan-gradient {
+  background: linear-gradient(to right, #7aa8f0, #3F7BC2); /* Change these colors */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block; /* Important for the gradient to work properly */
+}
+.hero-right{
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:100%;
+
+}
+
+.lifecycle-wrapper{
+    height:100%;
+    width:100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.top-k1{
+    /* bun */
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 210;
+    stroke-dashoffset: 0;
+    animation-delay: 0; /* Adds a 2-second delay before the first cycle */
+}
+.top-k2{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 0;
+
+}
+.top-k3{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 190;
+    stroke-dashoffset: 0;  
+}
+
+/*  */
+
+.left-k1{
+    /* bun */
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 210;
+    stroke-dashoffset: 0;
+    animation-delay:5s; /* Adds a 2-second delay before the first cycle */
+}
+.left-k2{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 0;
+    animation-delay: 5s;
+
+}
+.left-k3{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 190;
+    stroke-dashoffset: 0; 
+    animation-delay: 5s; 
+}
+
+.bottom-k1{
+    /* bun */
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 210;
+    stroke-dashoffset: 0;
+    animation-delay: 10s; /* Adds a 2-second delay before the first cycle */
+}
+.bottom-k2{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 0;
+    animation-delay: 10s;
+
+}
+.bottom-k3{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 190;
+    stroke-dashoffset: 0; 
+    animation-delay: 10s; 
+}
+
+.right-k1{
+    /* bun */
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 210;
+    stroke-dashoffset: 0;
+    animation-delay:15s; /* Adds a 2-second delay before the first cycle */
+}
+.right-k2{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 0;
+    animation-delay: 15s;
+
+}
+.right-k3{
+    animation: drawMe 20s ease-in-out forwards infinite;
+    stroke-dasharray: 190;
+    stroke-dashoffset: 0; 
+    animation-delay: 15s; 
+}
+
+
+
+@keyframes drawMe {
+    0% {
+    stroke-dashoffset: 200;
+    }
+    70% {
+    stroke-dashoffset: 0;
+    }
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+
+
+
+
+
