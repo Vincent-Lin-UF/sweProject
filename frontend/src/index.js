@@ -7,6 +7,7 @@ import Root from './routes/Root.js';
 import ErrorPage from "./Error.js";
 import Login from "./login/Login.js";
 import Signup from "./login/SignUp";
+import Hero from "./components/Hero.js";
 
 import {
     createBrowserRouter,
