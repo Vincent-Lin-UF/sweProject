@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import Root from './routes/Root.js';
 import ErrorPage from "./Error.js";
 import Login from "./login/Login.js";
+import Signup from "./login/SignUp";
 
 import {
     createBrowserRouter,
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
             {
                 path: "login/",
                 element: <Login />
+            },
+            {
+                path: "signup/",
+                element: <Signup />
             }
         ]
     }
