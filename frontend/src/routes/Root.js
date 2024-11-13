@@ -10,9 +10,14 @@ function Root() {
             <AppBar position="static">
                 <Toolbar
                 style ={{backgroundColor: '#fff'}}>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }} style ={{color: "#292729"}}
+                    <Typography 
+                        variant="h6" 
+                        sx={{ flexGrow: 1 }} 
+                        style={{ color: "#292729" }}
                     >
+                    <Link to="/" style={{ textDecoration: 'none', color: "#292729" }}>
                         Siege
+                    </Link>
                     </Typography>
                     <Link to="/" style={{ color: '#292729', textDecoration: 'none', margin: '0 10px' }}>
                         Home
