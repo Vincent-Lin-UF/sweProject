@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <TestConnection/>
-      <div><p>vincent test</p></div>
+      <div><p>vincent test 2</p></div>
     </div>
   );
 }
