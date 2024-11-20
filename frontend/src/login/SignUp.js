@@ -18,7 +18,7 @@ function Copyright() {
         <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
             {'Copyright © '}
             <Link color="inherit" href="https://siege-swe.vercel.app/">
-                Your Website
+                Siege
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
