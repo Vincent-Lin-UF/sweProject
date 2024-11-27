@@ -7,7 +7,7 @@ import Root from './routes/Root.js';
 import ErrorPage from "./Error.js";
 import Login from "./login/Login.js";
 import Signup from "./login/SignUp";
-import Hero from "./components/Hero.js";
+import Home from "./pages/Home.js"
 
 import {
     createBrowserRouter,
@@ -20,6 +20,10 @@ const router = createBrowserRouter([
         element: <Root />,
         errorElement: <ErrorPage />,
         children: [
+            {
+                path: "/",
+                element: <Home />
+            },
             {
                 path: "login/",
                 element: <Login />
