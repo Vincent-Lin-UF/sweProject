@@ -11,39 +11,29 @@ import {
     Link,
 } from '@mui/material';
 
+
+import Cookies from 'universal-cookie';
 import axios from "axios";
 
-function Copyright() {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://siege-swe.vercel.app/">
-                Siege
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+const cookies = new Cookies();
 
-function Signup() {
-    const [name, setName] = useState('');
+
+function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Name:', name);
         console.log('Email:', email);
         console.log('Password:', password);
 
-        axios.post(process.env.REACT_APP_API_URL + '/api/users/register', {
-            'name': name,
+        axios.post(process.env.REACT_APP_API_URL + '/api/users/login', {
             'email': email,
             'password': password
-        })
+        }, {withCredentials: true})
             .then(function (response) {
                 console.log(response);
+                cookies.set('token', response.data.salt, { path: '/' });
             })
             .catch(function (error) {
                 console.log(error);
@@ -62,21 +52,9 @@ function Signup() {
                 }}
             >
                 <Typography component="h1" variant="h5">
-                    Sign Up
+                    Log in
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="name"
-                        label="Name"
-                        name="name"
-                        autoComplete="name"
-                        autoFocus
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
                     <TextField
                         margin="normal"
                         required
@@ -107,20 +85,19 @@ function Signup() {
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Sign Up
+                        Log In
                     </Button>
                     <Grid container>
                         <Grid item>
-                            <Link href="login" variant="body2">
-                                {"Already have an account? Sign in"}
+                            <Link href="signup" variant="body2">
+                                {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>
                     </Grid>
                 </Box>
             </Box>
-            <Copyright />
         </Container>
     );
 }
 
-export default Signup;
+export default Login;
