@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext, createContext} from 'react';
 import Layout from "./components/Layout";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -7,7 +7,9 @@ import ErrorPage from "./Error";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
-
+import Profile from "./pages/Profile";
+import AuthProvider from "./AuthProvider";
+import {useAuth} from "./AuthProvider";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -39,21 +41,30 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path="workouts" element={
-            <ProtectedRoute isAuthenticated={isAuthenticated}>
-              <WorkoutTracker />
-            </ProtectedRoute>
-          } />
-        </Route>
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </BrowserRouter>
+    <AuthProvider isAuthenticated={isAuthenticated}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path="workouts" element={
+              <ProtectedRoute>
+                <WorkoutTracker />
+              </ProtectedRoute>
+            } />
+
+            {/*<Route path="profile" element={*/}
+            {/*  <ProtectedRoute isAuthenticated={isAuthenticated}>*/}
+            {/*    <Profile />*/}
+            {/*  </ProtectedRoute>*/}
+            {/*} />*/}
+
+          </Route>
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
 
   );
 }
