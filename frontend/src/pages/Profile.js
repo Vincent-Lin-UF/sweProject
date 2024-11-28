@@ -1,153 +1,214 @@
-// import React, { useState, useEffect } from 'react'
-// import { useRouter } from 'next/navigation'
-// import { Button } from "@/components/ui/button"
-// import { Input } from "@/components/ui/input"
-// import { Label } from "@/components/ui/label"
-// import { Textarea } from "@/components/ui/textarea"
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-// import Cookies from 'universal-cookie'
-//
-// const cookies = new Cookies()
-//
-// export default function Profile() {
-//   const [user, setUser] = useState({
-//     name: '',
-//     email: '',
-//     bio: '',
-//     avatarUrl: ''
-//   })
-//   const [isEditing, setIsEditing] = useState(false)
-//   const router = useRouter()
-//
-//   useEffect(() => {
-//     const fetchUserData = async () => {
-//       try {
-//         // fetch from api
-//         const userData = {
-//           name: 'BBL Drizzy',
-//           email: 'anthonylovesBBLDrizzy@helicop.ter',
-//           bio: 'i glaze drizzy drake, he did no wrong. i love his meat',
-//           avatarUrl: 'https://github.com/shadcn.png'
-//         }
-//         setUser(userData)
-//       } catch (error) {
-//         console.error('Error fetching user data:', error)
-//       }
-//     }
-//
-//     fetchUserData()
-//   }, [])
-//
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target
-//     setUser(prevUser => ({ ...prevUser, [name]: value }))
-//   }
-//
-//   const handleSubmit = async (e) => {
-//     e.preventDefault()
-//     console.log('Updated user data:', user)
-//
-//     try {
-//       const response = await fetch('/api/users/update-profile', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': `Bearer ${cookies.get('token')}`
-//         },
-//         body: JSON.stringify(user),
-//       })
-//
-//       if (response.ok) {
-//         console.log('Profile updated successfully')
-//         setIsEditing(false)
-//       } else {
-//         console.log('Profile update failed')
-//         // Handle update error (e.g., show error message)
-//       }
-//     } catch (error) {
-//       console.error('Profile update error:', error)
-//       // Handle network error
-//     }
-//   }
-//
-//   const handleLogout = () => {
-//     cookies.remove('token', { path: '/' })
-//     router.push('/login')
-//   }
-//
-//   return (
-//     <div className="flex min-h-screen items-center justify-center bg-gray-100">
-//       <div className="w-full max-w-md space-y-8 bg-white p-8 rounded-lg shadow-md">
-//         <div className="flex flex-col items-center">
-//           <Avatar className="w-24 h-24">
-//             <AvatarImage src={user.avatarUrl} alt={user.name} />
-//             <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-//           </Avatar>
-//           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-//             {isEditing ? 'Edit Profile' : 'Your Profile'}
-//           </h2>
-//         </div>
-//         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-//           <div className="space-y-4 rounded-md shadow-sm">
-//             <div>
-//               <Label htmlFor="name">Name</Label>
-//               <Input
-//                 id="name"
-//                 name="name"
-//                 type="text"
-//                 required
-//                 value={user.name}
-//                 onChange={handleInputChange}
-//                 disabled={!isEditing}
-//                 className="mt-1"
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="email">Email address</Label>
-//               <Input
-//                 id="email"
-//                 name="email"
-//                 type="email"
-//                 required
-//                 value={user.email}
-//                 onChange={handleInputChange}
-//                 disabled={!isEditing}
-//                 className="mt-1"
-//               />
-//             </div>
-//             <div>
-//               <Label htmlFor="bio">Bio</Label>
-//               <Textarea
-//                 id="bio"
-//                 name="bio"
-//                 rows={4}
-//                 value={user.bio}
-//                 onChange={handleInputChange}
-//                 disabled={!isEditing}
-//                 className="mt-1"
-//               />
-//             </div>
-//           </div>
-//
-//           {isEditing ? (
-//             <div className="flex space-x-4">
-//               <Button type="submit" className="flex-1">
-//                 Save Changes
-//               </Button>
-//               <Button type="button" variant="outline" onClick={() => setIsEditing(false)} className="flex-1">
-//                 Cancel
-//               </Button>
-//             </div>
-//           ) : (
-//             <Button type="button" onClick={() => setIsEditing(true)} className="w-full">
-//               Edit Profile
-//             </Button>
-//           )}
-//         </form>
-//         <Button variant="outline" onClick={handleLogout} className="w-full">
-//           Log Out
-//         </Button>
-//       </div>
-//     </div>
-//   )
-// }
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
+
+// Mock data for workouts
+const initialWorkouts = [
+  { id: 1, date: '2024-11-01', type: 'Running', duration: 30 },
+  { id: 2, date: '2024-11-03', type: 'Weightlifting', duration: 45 },
+  { id: 3, date: '2024-11-05', type: 'Yoga', duration: 60 },
+];
+
+function Profile() {
+  const [user, setUser] = useState({
+    name: 'Anthony Yao',
+    email: '',
+    bio: 'BBL Drizzy #1 Meat Rider',
+    avatarUrl: '',
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [workouts, setWorkouts] = useState(initialWorkouts);
+  const [searchDate, setSearchDate] = useState('');
+  const [editingWorkout, setEditingWorkout] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${cookies.get('token')}` },
+        });
+        setUser(response.data);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        if (error.response && error.response.status === 401) {
+          navigate('/login');
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [navigate]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUser((prevUser) => ({ ...prevUser, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/users/update-profile`,
+        user,
+        {
+          headers: { Authorization: `Bearer ${cookies.get('token')}` },
+          withCredentials: true,
+        }
+      );
+      console.log('Profile updated successfully');
+      setIsEditing(false);
+    } catch (error) {
+      console.error('Profile update error:', error);
+    }
+  };
+
+  const handleLogout = () => {
+    cookies.remove('token', { path: '/' });
+    navigate('/login');
+  };
+
+  const handleSearch = () => {
+    if (searchDate) {
+      const filteredWorkouts = initialWorkouts.filter(workout => workout.date === searchDate);
+      setWorkouts(filteredWorkouts);
+    } else {
+      setWorkouts(initialWorkouts);
+    }
+  };
+
+  const handleEdit = (workout) => {
+    setEditingWorkout(workout);
+  };
+
+  const handleSave = () => {
+    setWorkouts(workouts.map(w => w.id === editingWorkout.id ? editingWorkout : w));
+    setEditingWorkout(null);
+  };
+
+  return (
+    <div style={{ maxWidth: '600px', margin: '0 auto', padding: '20px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <img
+          src={user.avatarUrl || 'https://via.placeholder.com/100'}
+          alt={user.name}
+          style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+        />
+        <h1>{isEditing ? 'Edit Profile' : 'Your Profile'}</h1>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={user.name}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            style={{ width: '100%', padding: '5px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={user.email}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            style={{ width: '100%', padding: '5px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '15px' }}>
+          <label htmlFor="bio">Bio:</label>
+          <textarea
+            id="bio"
+            name="bio"
+            value={user.bio}
+            onChange={handleInputChange}
+            disabled={!isEditing}
+            style={{ width: '100%', padding: '5px', height: '100px' }}
+          />
+        </div>
+        {isEditing ? (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <button type="submit" style={{ padding: '10px', backgroundColor: '#4CAF50', color: 'white', border: 'none' }}>
+              Save Changes
+            </button>
+            <button type="button" onClick={() => setIsEditing(false)} style={{ padding: '10px', backgroundColor: '#f44336', color: 'white', border: 'none' }}>
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <button type="button" onClick={() => setIsEditing(true)} style={{ width: '100%', padding: '10px', backgroundColor: '#008CBA', color: 'white', border: 'none' }}>
+            Edit Profile
+          </button>
+        )}
+      </form>
+
+      <div style={{ marginTop: '30px' }}>
+        <h2>Workouts</h2>
+        <div style={{ marginBottom: '15px', display: 'flex' }}>
+          <input
+            type="date"
+            value={searchDate}
+            onChange={(e) => setSearchDate(e.target.value)}
+            style={{ marginRight: '10px', padding: '5px' }}
+          />
+          <button onClick={handleSearch} style={{ padding: '5px 10px', backgroundColor: '#008CBA', color: 'white', border: 'none' }}>
+            Search
+          </button>
+        </div>
+
+        {workouts.map(workout => (
+          <div key={workout.id} style={{ border: '1px solid #ddd', padding: '10px', marginBottom: '10px' }}>
+            {editingWorkout && editingWorkout.id === workout.id ? (
+              <>
+                <input
+                  type="date"
+                  value={editingWorkout.date}
+                  onChange={(e) => setEditingWorkout({...editingWorkout, date: e.target.value})}
+                  style={{ marginRight: '10px', padding: '5px' }}
+                />
+                <input
+                  value={editingWorkout.type}
+                  onChange={(e) => setEditingWorkout({...editingWorkout, type: e.target.value})}
+                  style={{ marginRight: '10px', padding: '5px' }}
+                />
+                <input
+                  type="number"
+                  value={editingWorkout.duration}
+                  onChange={(e) => setEditingWorkout({...editingWorkout, duration: parseInt(e.target.value)})}
+                  style={{ marginRight: '10px', padding: '5px', width: '50px' }}
+                />
+                <button onClick={handleSave} style={{ padding: '5px 10px', backgroundColor: '#4CAF50', color: 'white', border: 'none' }}>
+                  Save
+                </button>
+              </>
+            ) : (
+              <>
+                <span style={{ marginRight: '10px' }}>{workout.date}</span>
+                <span style={{ marginRight: '10px' }}>{workout.type}</span>
+                <span style={{ marginRight: '10px' }}>{workout.duration} minutes</span>
+                <button onClick={() => handleEdit(workout)} style={{ padding: '5px 10px', backgroundColor: '#008CBA', color: 'white', border: 'none' }}>
+                  Edit
+                </button>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <button onClick={handleLogout} style={{ width: '100%', padding: '10px', backgroundColor: '#f44336', color: 'white', border: 'none', marginTop: '20px' }}>
+        Log Out
+      </button>
+    </div>
+  );
+}
+
+export default Profile;

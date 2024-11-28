@@ -30,7 +30,6 @@ function NavBar() {
                               Login
                           </Link>)
                     }
-
                     <Link to="/workouts" style={{ textDecoration: 'none', color: '#292729' }}>
                         Workouts
                     </Link>
