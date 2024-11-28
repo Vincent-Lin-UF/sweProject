@@ -17,7 +17,7 @@ module.exports = (passport) => {
         '/api/users/login',
         passport.authenticate("local"),
         (req, res) => {
-            res.json(req.user);
+            res.json({success: true});
             res.status(200)
         }
     );
@@ -45,9 +45,17 @@ module.exports = (passport) => {
         await client.query('INSERT INTO users VALUES($1::text, $2::text, $3::text, $4::text)', [email, name, hashed_pword, salt]);
     })
 
-    router.post('/logout', (req, res) => {
+    router.post('/api/users/logout', (req, res) => {
         req.logout();
         res.send({ status: 'Logged out' });
+    });
+
+    router.get('/api/users/status', (req, res) => {
+        if (req.isAuthenticated()) {
+            res.status(200).json({ isAuthenticated: true, user: req.user });
+        } else {
+            res.status(200).json({ isAuthenticated: false, message: 'User not authenticated' });
+        }
     });
 
     return router;

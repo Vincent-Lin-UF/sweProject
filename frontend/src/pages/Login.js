@@ -6,7 +6,6 @@ import {
     Typography,
     Container,
     CssBaseline,
-    Avatar,
     Grid,
     Link,
 } from '@mui/material';
@@ -14,6 +13,7 @@ import {
 
 import Cookies from 'universal-cookie';
 import axios from "axios";
+import {redirect, useNavigate} from "react-router-dom";
 
 const cookies = new Cookies();
 
@@ -21,6 +21,10 @@ const cookies = new Cookies();
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loginFailed, setLoginFailed] = useState(false);
+
+    const navigate = useNavigate();
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,10 +37,15 @@ function Login() {
         }, {withCredentials: true})
             .then(function (response) {
                 console.log(response);
-                cookies.set('token', response.data.salt, { path: '/' });
+                if (response.data.success === true) {
+                    navigate('/', {replace: true});
+                } else {
+                    setLoginFailed(true);
+                }
             })
             .catch(function (error) {
                 console.log(error);
+                setLoginFailed(true);
             });
     };
 
@@ -76,6 +85,7 @@ function Login() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        helperText={loginFailed ? "Wrong password" : ""}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />

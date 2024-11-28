@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var ExtractJwt = require('passport-jwt').ExtractJwt;
 var crypto = require('crypto');
 var session = require('express-session')
 
@@ -20,7 +21,10 @@ const client = new Client({
 const app = express();
 
 app.use(session({
-  secret: "pqowetbpgojWPAOEK[Q[TKSF;LM"
+  secret: "pqowetbpgojWPAOEK[Q[TKSF;LM",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {secure: false},
 }));
 
 
@@ -31,58 +35,35 @@ app.use(passport.session());
 passport.use(new LocalStrategy(
     { usernameField: 'email', passwordField: 'password' },
     function verify(username, password, cb) {
-  console.log("f");
   client.query('SELECT * FROM users WHERE email = $1::text', [username], (err, res) => {
     if (err) {
-      console.log("err");
       return cb(err);
     }
-    console.log('no err');
     const rows = res.rows;
     if (rows.length === 0) return cb(null, false, {message: 'Incorrect username or password.'});
     const user = rows[0];
     crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
       if (err) { return cb(err); }
-      console.log(hashedPassword);
       if (!crypto.timingSafeEqual(Buffer.from(user.password, 'hex'), hashedPassword)) {
         return cb(null, false, { message: 'Incorrect username or password.' });
       }
       return cb(null, user);
     });
   });
-
-  // db.get('SELECT * FROM users WHERE username = ?', [ username ], function(err, user) {
-  //   if (err) { return cb(err); }
-  //   if (!user) { return cb(null, false, { message: 'Incorrect username or password.' }); }
-  //
-  //   crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
-  //     if (err) { return cb(err); }
-  //     if (!crypto.timingSafeEqual(user.hashed_password, hashedPassword)) {
-  //       return cb(null, false, { message: 'Incorrect username or password.' });
-  //     }
-  //     return cb(null, user);
-  //   });
-  // });
 }));
 
 passport.serializeUser(function(user, done) {
-  console.log("tin");
-  console.log(user)
   done(null, user.email);
 });
 
 passport.deserializeUser(function(user, done) {
-  console.log("fwuih")
-  client.query('SELECT * FROM users WHERE email = $1::text', [user.id], (err, res) => {
+  client.query('SELECT * FROM users WHERE email = $1::text', [user], (err, res) => {
     if (err) {
-      console.log("errrrrr");
       return done(err);
     }
-    console.log('no errrrr');
     const rows = res.rows;
     if (rows.length === 0) return done(null, false, {message: 'Incorrect username or password.'});
-    const user = rows[0];
-    done(null, user.email);
+    done(null, rows[0]);
   });
 });
 
