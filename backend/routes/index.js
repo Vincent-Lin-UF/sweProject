@@ -51,7 +51,6 @@ module.exports = (passport) => {
     });
 
     router.get('/api/users/status', (req, res) => {
-        console.log("Checked auth status");
         if (req.isAuthenticated()) {
             res.status(200).json({ isAuthenticated: true, user: req.user });
         } else {

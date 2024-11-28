@@ -20,6 +20,8 @@ function App() {
           credentials: 'include', // Include cookies/session info
         });
         const data = await response.json();
+        console.log(data);
+
         setIsAuthenticated(data.isAuthenticated);
       } catch (error) {
         console.error('Error checking auth status:', error);
