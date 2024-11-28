@@ -20,6 +20,9 @@ function NavBar() {
                     <Link to="/login" style={{ textDecoration: 'none', color: '#292729' }}>
                         Login
                     </Link>
+                    <Link to="/profile" style={{ textDecoration: 'none', color: '#292729' }}>
+                        Profile
+                    </Link>
                     <Link to="/workouts" style={{ textDecoration: 'none', color: '#292729' }}>
                         Workouts
                     </Link>
