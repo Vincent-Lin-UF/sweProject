@@ -7,6 +7,7 @@ import ErrorPage from './Error';
 import Login from './pages/Login';
 import Signup from './pages/SignUp';
 import Home from './pages/Home';
+import Profile from './pages/Profile';
 import WorkoutTracker from './pages/WorkoutTracker'; 
 
 import {
