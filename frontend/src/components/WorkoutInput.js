@@ -37,8 +37,8 @@ function WorkoutInput({ onAddWorkout }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const workout = { activity, duration, date };
-    onAddWorkout(workout);
+    // const workout = { activity, duration, date };
+    // onAddWorkout(workout);
     setActivity('');
     setDuration('');
     axios.post(

@@ -102,6 +102,41 @@ CREATE TABLE Runs (email text REFERENCES users(email), run_id INT GENERATED ALWA
         handler(req, res, body);
     });
 
+    async function handle_run_data(req, res) {
+        let client = req.pgClient;
+        try {
+            const qr = await client.query('SELECT * FROM Runs WHERE email = $1::text', [req.user.email]);
+            console.log(qr);
+            res.status(200).json({data: qr.rows});
+        } catch (e) {
+            res.status(400).json({message: "Probably invalid email"});
+        }
+    }
+
+    const get_data_handlers = {
+        Running: handle_run_data,
+
+    }
+
+    router.get('/api/data/get-workouts', async (req, res) => {
+        if (!req.isAuthenticated()) {
+            res.status(401).json({message: 'Authenticated yourself, you nincompoop'})
+            return;
+        }
+
+        if (!('workout' in req.query)) {
+            res.status(400).json({message: 'invalid request'});
+            return;
+        }
+
+        let workout = req.query.workout;
+        if (!(workout in get_data_handlers)) {
+            res.status(400).json({message: 'invalid request'});
+            return;
+        }
+
+        get_data_handlers[workout](req, res);
+    })
 
     return router;
 }
