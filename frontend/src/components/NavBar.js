@@ -33,6 +33,9 @@ function NavBar() {
                     <Link to="/workouts" style={{ textDecoration: 'none', color: '#292729' }}>
                         Workouts
                     </Link>
+                    <Link to="/dashboard" style={{ textDecoration: 'none', color: '#292729' }}>
+                        Dashboard
+                    </Link>
                 </Box>
             </Toolbar>
         </AppBar>

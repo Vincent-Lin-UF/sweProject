@@ -7,9 +7,8 @@ import ErrorPage from "./Error";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
-import Profile from "./pages/Profile";
 import AuthProvider from "./AuthProvider";
-import {useAuth} from "./AuthProvider";
+import WorkoutDashboard from "./pages/WorkoutDashboard";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -52,6 +51,11 @@ function App() {
             <Route path="workouts" element={
               <ProtectedRoute>
                 <WorkoutTracker />
+              </ProtectedRoute>
+            } />
+            <Route path="dashboard" element={
+              <ProtectedRoute>
+                <WorkoutDashboard />
               </ProtectedRoute>
             } />
 
