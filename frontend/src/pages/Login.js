@@ -10,12 +10,9 @@ import {
     Link,
 } from '@mui/material';
 
-
-import Cookies from 'universal-cookie';
 import axios from "axios";
-import {redirect, useNavigate} from "react-router-dom";
-
-const cookies = new Cookies();
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "../AuthProvider";
 
 
 function Login() {
@@ -25,6 +22,7 @@ function Login() {
 
     const navigate = useNavigate();
 
+    const { triggerAuthStatusCheck } = useAuth();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -38,6 +36,7 @@ function Login() {
             .then(function (response) {
                 console.log(response);
                 if (response.data.success === true) {
+                    triggerAuthStatusCheck();
                     navigate('/', {replace: true});
                 } else {
                     setLoginFailed(true);

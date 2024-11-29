@@ -14,6 +14,7 @@ import {useAuth} from "./AuthProvider";
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [authStatusCheck, triggerAuthStatusCheck] = useState(false);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -34,14 +35,14 @@ function App() {
     };
 
     checkAuthStatus();
-  }, []);
+  }, [authStatusCheck]);
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <AuthProvider isAuthenticated={isAuthenticated}>
+    <AuthProvider isAuthenticated={isAuthenticated} triggerAuthStatusCheck={triggerAuthStatusCheck}>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
